@@ -1,0 +1,76 @@
+# CMake minimum version
+cmake_minimum_required(VERSION 3.28.0)
+
+# Project name
+project(playground)
+
+set(CMAKE_CXX_COMPILER "g++")  # Specify the MinGW C++ compiler
+set(CMAKE_C_COMPILER "gcc")    # Specify the MinGW C compiler
+set(CMAKE_CXX_STANDARD 17)     # Set the C++ standard
+
+file(GLOB SOURCES "src/*.cpp") # Add source files from the ./src/ directory
+include_directories("include/")   # Add include directory
+
+# Find SDL2 packages
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+
+# Add executable
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+# Set output directory for executable based on build configuration
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin"
+)
+
+# Set compiler options for Debug configuration
+target_compile_options(${PROJECT_NAME} PRIVATE
+    "$<$<CONFIG:Debug>:-Wall;-Wextra;-g>"
+)
+
+# Include directories for SDL2, SDL2_image, and SDL2_ttf
+include_directories(${SDL2_INCLUDE_DIRS}
+                    ${SDL2_IMAGE_INCLUDE_DIRS}
+                    ${SDL2_TTF_INCLUDE_DIRS}
+)
+
+# Link libraries
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    SDL2::SDL2main
+    SDL2::SDL2
+    SDL2_image::SDL2_image
+    SDL2_ttf::SDL2_ttf
+)
+
+# Set compiler options for Release configuration
+target_compile_options(${PROJECT_NAME} PRIVATE
+    "$<$<CONFIG:Release>:-O2>"
+)
+
+# Additional configurations for Release build
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    # Static linking of C++ runtime library
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -static-libstdc++ -static-libgcc")
+
+    # Static linking of SDL2 libraries and its dependencies
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        -static
+        SDL2::SDL2main
+        SDL2::SDL2
+        SDL2_image::SDL2_image
+        SDL2_ttf::SDL2_ttf
+    )
+endif()
+
+# Copy resources to the build directory
+add_custom_target(copy_resources ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/resources
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
+    COMMENT "Copying resources to build directory"
+)
+
+# Add dependency on the copy_resources target
+add_dependencies(${PROJECT_NAME} copy_resources)

@@ -1,0 +1,58 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug C++",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Debug/bin/playground.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/build/Debug/bin/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build-make-debug",
+            "miDebuggerPath": "D:/Programs/msys64/ucrt64/bin/gdb.exe",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug release C++",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Release/bin/playground.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/build/Release/bin/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build-make-release",
+            "miDebuggerPath": "D:/Programs/msys64/ucrt64/bin/gdb.exe",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Run Release",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Release/bin/playground.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/build/Release/bin/",
+            "environment": [],
+            "externalConsole": true,
+            "preLaunchTask": "build-make-release"
+        }
+    ]
+}

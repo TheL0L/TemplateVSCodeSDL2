@@ -1,0 +1,222 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cmake-debug",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE",
+                "-DCMAKE_C_COMPILER=D:/Programs/msys64/ucrt64/bin/gcc.exe",
+                "-DCMAKE_CXX_COMPILER=D:/Programs/msys64/ucrt64/bin/g++.exe",
+                "-G",
+                "MinGW Makefiles",
+                "-B${workspaceFolder}/build/Debug",
+                "${workspaceFolder}"
+            ],
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "revealProblems": "onProblem",
+                "showReuseMessage": false
+            }
+        },
+        {
+            "label": "cmake-release",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE",
+                "-DCMAKE_C_COMPILER=D:/Programs/msys64/ucrt64/bin/gcc.exe",
+                "-DCMAKE_CXX_COMPILER=D:/Programs/msys64/ucrt64/bin/g++.exe",
+                "-G",
+                "MinGW Makefiles",
+                "-B${workspaceFolder}/build/Release",
+                "${workspaceFolder}"
+            ],
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "revealProblems": "onProblem",
+                "showReuseMessage": false
+            }
+        },
+        {
+            "label": "cmake-all",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "Write-Host 'CMake task completed: All configurations generated' -ForegroundColor Green"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "revealProblems": "onProblem",
+                "showReuseMessage": true
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "clear-debug",
+                "clear-release",
+                "cmake-debug",
+                "cmake-release"
+            ]
+        },
+        {
+            "label": "build-make-debug",
+            "type": "shell",
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "revealProblems": "onProblem",
+                "showReuseMessage": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build/Debug"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "cmake-debug"
+            ]
+        },
+        {
+            "label": "build-make-debug (clean build)",
+            "type": "shell",
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "revealProblems": "onProblem",
+                "showReuseMessage": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build/Debug"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "clear-debug",
+                "cmake-debug"
+            ]
+        },
+        {
+            "label": "build-make-release",
+            "type": "shell",
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "revealProblems": "onProblem",
+                "showReuseMessage": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build/Release"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "cmake-release"
+            ]
+        },
+        {
+            "label": "build-make-release (clean build)",
+            "type": "shell",
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "revealProblems": "onProblem",
+                "showReuseMessage": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build/Release"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "clear-release",
+                "cmake-release"
+            ]
+        },
+        {
+            "label": "clear-debug",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "if (Test-Path '${workspaceFolder}/build/Debug') { Remove-Item -Recurse '${workspaceFolder}/build' }",
+                "Write-Host 'Clear task completed: debug build artifacts removed' -ForegroundColor Green"
+            ],
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "silent",
+                "focus": false,
+                "revealProblems": "onProblem",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
+            "label": "clear-release",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "if (Test-Path '${workspaceFolder}/build/Release') { Remove-Item -Recurse '${workspaceFolder}/build' }",
+                "Write-Host 'Clear task completed: release build artifacts removed' -ForegroundColor Green"
+            ],
+            "group": {
+                "kind": "none",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "silent",
+                "focus": false,
+                "revealProblems": "onProblem",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        }
+    ]
+}
