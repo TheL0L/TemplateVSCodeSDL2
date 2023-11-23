@@ -180,7 +180,7 @@
             "command": "powershell",
             "args": [
                 "-Command",
-                "if (Test-Path '${workspaceFolder}/build/Debug') { Remove-Item -Recurse '${workspaceFolder}/build' }",
+                "if (Test-Path '${workspaceFolder}/build/Debug') { Remove-Item -Recurse '${workspaceFolder}/build/Debug' }",
                 "Write-Host 'Clear task completed: debug build artifacts removed' -ForegroundColor Green"
             ],
             "group": {
@@ -202,7 +202,7 @@
             "command": "powershell",
             "args": [
                 "-Command",
-                "if (Test-Path '${workspaceFolder}/build/Release') { Remove-Item -Recurse '${workspaceFolder}/build' }",
+                "if (Test-Path '${workspaceFolder}/build/Release') { Remove-Item -Recurse '${workspaceFolder}/build/Release' }",
                 "Write-Host 'Clear task completed: release build artifacts removed' -ForegroundColor Green"
             ],
             "group": {
