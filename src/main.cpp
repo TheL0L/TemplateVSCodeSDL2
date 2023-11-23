@@ -108,6 +108,7 @@ int main(int argc, char** argv)
         window.frameLimiter();
     }
 
+    SDL_Quit();
     return 0;
 }
 
@@ -116,7 +117,7 @@ bool init()
     // IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP | IMG_INIT_JXL | IMG_INIT_AVIF
     const uint32_t sdl_imgFlags = IMG_INIT_PNG;
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) > 0)
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         std::cerr << "SDL failed to initialize. Error: " << SDL_GetError() << std::endl;
         return false;
