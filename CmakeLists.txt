@@ -30,12 +30,6 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     "$<$<CONFIG:Debug>:-Wall;-Wextra;-g>"
 )
 
-# Include directories for SDL2, SDL2_image, and SDL2_ttf
-include_directories(${SDL2_INCLUDE_DIRS}
-                    ${SDL2_IMAGE_INCLUDE_DIRS}
-                    ${SDL2_TTF_INCLUDE_DIRS}
-)
-
 # Link libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE
     SDL2::SDL2main
@@ -52,16 +46,8 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 # Additional configurations for Release build
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     # Static linking of C++ runtime library
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -static-libstdc++ -static-libgcc")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -static")
 
-    # Static linking of SDL2 libraries and its dependencies
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-        -static
-        SDL2::SDL2main
-        SDL2::SDL2
-        SDL2_image::SDL2_image
-        SDL2_ttf::SDL2_ttf
-    )
 endif()
 
 # Copy resources to the build directory
@@ -72,5 +58,16 @@ add_custom_target(copy_resources ALL
     COMMENT "Copying resources to build directory"
 )
 
-# Add dependency on the copy_resources target
-add_dependencies(${PROJECT_NAME} copy_resources)
+# Copy DLLs to the build directory
+add_custom_target(copy_dlls ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/shared
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    COMMENT "Copying dlls to build directory"
+)
+
+# Add dependency on the copy_resources and copy_dlls targets
+add_dependencies(${PROJECT_NAME}
+    copy_resources
+    copy_dlls
+)
